@@ -2,14 +2,24 @@ variable "rest_api_id" {}
 
 variable "root_resource_id" {}
 
-variable "integration_http_method" {}
-
-variable "type" {}
-
-variable "universal_integration" {}
-
 variable "stage_name" {}
 
 variable "lambda_function_name" {}
 
-variable "rest_api_execution_arn" {}
+variable "path_part" {}
+
+variable "lambda_invoke_arn" {}
+
+variable "http_method" {}
+
+variable "authorization" {}
+
+variable "query_string_a" {}
+
+variable "query_string_b" {}
+
+variable "query_string_c" {}
+
+variable "query_string_d" {}
+
+variable "request_validator" {}

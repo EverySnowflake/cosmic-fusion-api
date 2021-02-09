@@ -1,43 +1,37 @@
 module "cosmic_fusion_api" {
-  source = "./modules/api"
-}
-
-resource "aws_api_gateway_resource" "proxy" {
-  rest_api_id = module.cosmic_fusion_api.id
-  parent_id   = module.cosmic_fusion_api.root_resource_id
-  path_part   = "{proxy+}"
-}
-
-resource "aws_api_gateway_method" "proxyMethod" {
-  rest_api_id   = module.cosmic_fusion_api.id
-  resource_id   = aws_api_gateway_resource.proxy.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "lambda" {
-  rest_api_id             = module.cosmic_fusion_api.id
-  resource_id             = aws_api_gateway_method.proxyMethod.resource_id
-  http_method             = aws_api_gateway_method.proxyMethod.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = ""
+  source   = "./modules/api"
+  api_name = var.api_name
 }
 
 module "lambda" {
-  source          = "./modules/lambda"
-  lambda_zip_file = var.lambda_zip_file
-  handler         = var.handler
-  runtime         = "nodejs12.x"
+  source                 = "./modules/lambda"
+  lambda_zip_file        = "getProfile.zip"
+  function_name          = "getProfile"
+  handler                = "getProfile.handler"
+  runtime                = "nodejs12.x"
+  rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
+  lambda_bucket          = var.lambda_bucket
+}
+
+module "get_profile_request_validator" {
+  source                 = "./modules/request_validators"
+  request_validator_name = "get_profile"
+  rest_api_id            = module.cosmic_fusion_api.id
 }
 
 module "get_profile" {
-  source                  = "./modules/endpoints"
-  rest_api_id             = module.cosmic_fusion_api.id
-  resource_id             = module.cosmic_fusion_api.root_resource_id
-  integration_http_method = "GET"
-  universal_integration   = aws_api_gateway_integration.lambda
-  stage_name              = "test"
-  lambda_function_name    = module.lambda.function_name
-  rest_api_execution_arn  = module.cosmic_fusion_api.execution_arn
+  source               = "./modules/endpoints"
+  http_method          = "GET"
+  authorization        = "NONE"
+  stage_name           = "test"
+  path_part            = "getProfile"
+  query_string_a       = "dob"
+  query_string_b       = false
+  query_string_c       = false
+  query_string_d       = false
+  rest_api_id          = module.cosmic_fusion_api.id
+  root_resource_id     = module.cosmic_fusion_api.root_resource_id
+  lambda_function_name = module.lambda.function_name
+  lambda_invoke_arn    = module.lambda.invoke_arn
+  request_validator    = module.get_profile_request_validator.id
 }

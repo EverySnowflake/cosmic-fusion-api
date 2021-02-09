@@ -6,10 +6,14 @@ variable "type" {
   default = "AWS_PROXY"
 }
 
-variable "lambda_zip_file" {
-  default = "cosmic_fusion.zip"
+variable "handler" {
+  default = "test.handler"
 }
 
-variable "handler" {
-  default = "cosmic_fusion.handler"
+variable "region" {
+  default = "eu-west-2"
+}
+
+variable "lambda_bucket" {
+  default = "cosmic-fusion-lambda"
 }

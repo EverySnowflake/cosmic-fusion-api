@@ -26,7 +26,7 @@ module "get_profile" {
   stage_name           = "test"
   path_part            = "getProfile"
   query_string_a       = "dob"
-  query_string_b       = false
+  query_string_b       = "sex_at_birth"
   query_string_c       = false
   query_string_d       = false
   rest_api_id          = module.cosmic_fusion_api.id

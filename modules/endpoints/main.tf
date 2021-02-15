@@ -4,12 +4,19 @@ resource "aws_api_gateway_resource" "resource" {
   rest_api_id = var.rest_api_id
 }
 
+resource "aws_api_gateway_request_validator" "validator" {
+  name                        = var.path_part
+  rest_api_id                 = var.rest_api_id
+  validate_request_body       = true
+  validate_request_parameters = true
+}
+
 resource "aws_api_gateway_method" "method" {
   rest_api_id          = var.rest_api_id
   resource_id          = aws_api_gateway_resource.resource.id
   http_method          = var.http_method
   authorization        = var.authorization
-  request_validator_id = var.request_validator
+  request_validator_id = aws_api_gateway_request_validator.validator.id
 
   request_parameters = {
     "method.request.querystring.${var.query_string_a}" = false
@@ -52,10 +59,4 @@ resource "aws_api_gateway_integration_response" "integration_response" {
   http_method = aws_api_gateway_method.method.http_method
   status_code = aws_api_gateway_method_response.response_200.status_code
   depends_on  = [aws_api_gateway_resource.resource, aws_api_gateway_method.method, aws_api_gateway_integration.integration]
-}
-
-resource "aws_api_gateway_deployment" "deployment" {
-  depends_on  = [aws_api_gateway_integration.integration]
-  rest_api_id = var.rest_api_id
-  stage_name  = "test"
 }

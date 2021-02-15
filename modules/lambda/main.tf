@@ -24,7 +24,7 @@ resource "aws_lambda_permission" "apigw" {
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
 resource "aws_iam_role" "lambda_role" {
-  name = "role_lambda"
+  name = "${var.function_name}_role_lambda"
 
   assume_role_policy = <<EOF
 {

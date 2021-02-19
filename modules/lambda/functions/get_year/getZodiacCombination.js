@@ -1,13 +1,14 @@
 class getZodiacCombination {
 
-    constructor(dob, sex){
-        this.dob = dob;
-        this.sex = sex;
-        this.day = Number(dob.substring(0,2))
-        this.month = Number(dob.substring(2,4))
-        this.year = Number(dob.substring(4,10))
-        this.yearSuffix = Number(dob.slice(-1))
-    }
+  constructor(dob, sex){
+    this.dob = dob;
+    this.sex = sex;
+    this.dateArray = dob.split("-")
+    this.day = Number(this.dateArray[0])
+    this.month = Number(this.dateArray[1])
+    this.year = Number(this.dateArray[2])
+    this.yearSuffix = Number(dob.slice(-1))
+}
 
     western(day, month){
         const zodiacSigns = {

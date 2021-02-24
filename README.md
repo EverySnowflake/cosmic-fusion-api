@@ -10,7 +10,7 @@ Below is a list of all the available endpoints and how to use them.
 
 This endpoint takes **two** query strings and returns the metadata of an individual:
 
-1. `dob``
+1. `dob`
 2. `sex_at_birth`
 
 Note: `dob` structure is `dd-mm-yyyy`

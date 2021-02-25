@@ -16,10 +16,10 @@ This endpoint takes **two** query strings and returns the metadata of an individ
 Note: `dob` structure is `dd-mm-yyyy`
 
 > Structure
-https://cosmicfusion.com/getprofile?dob=${dob}&sex_at_birth=${sex_at_birth}
+https://api.cosmicfusions.com/getprofile?dob=${dob}&sex_at_birth=${sex_at_birth}
 
 > Example usage
-https://cosmicfusion.com/getprofile?dob=01-01-1900&sex_at_birth=1
+https://api.cosmicfusions.com/getprofile?dob=01-01-1900&sex_at_birth=1
 
 ### Expected Output
 
@@ -53,10 +53,10 @@ This endpoint takes **one** querystring and returns metadata about that day, mon
 Note: `date` structure is `dd-mm-yyyy`
 
 > Structure
-https://cosmicfusion.com/getprofile?date=${date}
+https://api.cosmicfusions.com/getyear?date=${date}
 
 > Example usage
-https://cosmicfusion.com/getprofile?date=01-01-1900
+https://api.cosmicfusions.com/getyear?date=01-01-1900
 
 ### Expected Output
 

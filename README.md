@@ -53,10 +53,10 @@ This endpoint takes **one** querystring and returns metadata about that day, mon
 Note: `date` structure is `dd-mm-yyyy`
 
 > Structure
-https://api.cosmicfusions.com/getprofile?date=${date}
+https://api.cosmicfusions.com/getyear?date=${date}
 
 > Example usage
-https://api.cosmicfusions.com/getprofile?date=01-01-1900
+https://api.cosmicfusions.com/getyear?date=01-01-1900
 
 ### Expected Output
 

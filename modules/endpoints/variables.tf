@@ -2,8 +2,6 @@ variable "rest_api_id" {}
 
 variable "root_resource_id" {}
 
-variable "stage_name" {}
-
 variable "lambda_function_name" {}
 
 variable "path_part" {}

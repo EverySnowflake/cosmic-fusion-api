@@ -61,14 +61,6 @@ module "get_year_endpoint" {
   lambda_invoke_arn    = module.get_year_lambda.invoke_arn
 }
 
-module "domain_deployment" {
-  source          = "./modules/domain_deployment"
-  rest_api_id     = module.cosmic_fusion_api.id
-  stage_name      = var.env
-  domain_name     = var.domain_name
-  certificate_arn = var.certificate_arn
-}
-
 #GET celebs
 
 module "get_celebs_lambda" {
@@ -123,4 +115,14 @@ module "get_friend_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_friend_lambda.function_name
   lambda_invoke_arn    = module.get_friend_lambda.invoke_arn
+}
+
+# Domain deployment
+
+module "domain_deployment" {
+  source          = "./modules/domain_deployment"
+  rest_api_id     = module.cosmic_fusion_api.id
+  stage_name      = var.env
+  domain_name     = var.domain_name
+  certificate_arn = var.certificate_arn
 }

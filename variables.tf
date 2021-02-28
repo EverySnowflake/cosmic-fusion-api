@@ -21,5 +21,5 @@ variable "lambda_bucket" {
 }
 
 variable "certificate_arn" {
-  default = "	arn:aws:acm:us-east-1:901964243946:certificate/f407b73c-5a78-4c25-9688-7d15c2bbee1f"
+  default = "arn:aws:acm:us-east-1:901964243946:certificate/f407b73c-5a78-4c25-9688-7d15c2bbee1f"
 }

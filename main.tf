@@ -22,7 +22,7 @@ module "get_profile_endpoint" {
   source               = "./modules/endpoints"
   http_method          = "GET"
   authorization        = "NONE"
-  path_part            = "getprofile"
+  path_part            = "get-profile"
   query_string_a       = "dob"
   query_string_b       = "sex_at_birth"
   query_string_c       = false
@@ -50,7 +50,7 @@ module "get_year_endpoint" {
   source               = "./modules/endpoints"
   http_method          = "GET"
   authorization        = "NONE"
-  path_part            = "getyear"
+  path_part            = "get-year"
   query_string_a       = "date"
   query_string_b       = "sex_at_birth"
   query_string_c       = false
@@ -86,11 +86,11 @@ module "get_celebs_endpoint" {
   source               = "./modules/endpoints"
   http_method          = "GET"
   authorization        = "NONE"
-  path_part            = "getcelebs"
-  query_string_a       = "dob"
-  query_string_b       = "sex_at_birth"
-  query_string_c       = "friend_dob"
-  query_string_d       = "friend_sex_at_birth"
+  path_part            = "get-celebs"
+  query_string_a       = false
+  query_string_b       = false
+  query_string_c       = false
+  query_string_d       = false
   rest_api_id          = module.cosmic_fusion_api.id
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_celebs_lambda.function_name
@@ -99,7 +99,7 @@ module "get_celebs_endpoint" {
 
 #GET friend
 
-module "get_celebs_lambda" {
+module "get_friend_lambda" {
   source                 = "./modules/lambda"
   lambda_zip_file        = "${var.env}GetFriend.zip"
   function_name          = "${var.env}GetFriend"
@@ -110,17 +110,17 @@ module "get_celebs_lambda" {
   env                    = var.env
 }
 
-module "get_celebs_endpoint" {
+module "get_friend_endpoint" {
   source               = "./modules/endpoints"
   http_method          = "GET"
   authorization        = "NONE"
-  path_part            = "getfriend"
-  query_string_a       = false
-  query_string_b       = false
-  query_string_c       = false
-  query_string_d       = false
+  path_part            = "get-friend"
+  query_string_a       = "dob"
+  query_string_b       = "sex_at_birth"
+  query_string_c       = "friend_dob"
+  query_string_d       = "friend_sex_at_birth"
   rest_api_id          = module.cosmic_fusion_api.id
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
-  lambda_function_name = module.get_celebs_lambda.function_name
-  lambda_invoke_arn    = module.get_celebs_lambda.invoke_arn
+  lambda_function_name = module.get_friend_lambda.function_name
+  lambda_invoke_arn    = module.get_friend_lambda.invoke_arn
 }

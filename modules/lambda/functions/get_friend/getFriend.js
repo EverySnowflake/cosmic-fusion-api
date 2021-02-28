@@ -21,6 +21,9 @@ exports.handler = function (event, context, callback) {
     const user_info = user_1.getInfo();
     const user_info_2 = user_2.getInfo();
 
+    const {westernId, elementId, animalId, sex, trio} = user_info;
+    const {westernId2, elementId2, animalId2, sex2, trio2} = user_info_2;
+
     const db = mysql.createConnection({
         host: DATABASE_HOST,
         port: DATABASE_PORT,
@@ -30,12 +33,23 @@ exports.handler = function (event, context, callback) {
     });
 
     db.connect((error) => {
-        if(error) throw error;
+        if (error) throw error;
         console.log("Connected");
     });
 
+    const query = `SELECT score FROM compatibility_scores WHERE westernId_1=${westernId} AND elementId_1=${elementId} AND animalId_1=${animalId} AND westernId_2=${westernId2} AND elementId_2=${elementId2} AND animalId_2=${animalId2} AND type=${sex_at_birth_1};`;
 
-
-    const query = `SELECT score FROM compatibility_scores WHERE westernId_1=${user_1.westernId} AND elementId_1=${user_1.elementId} AND animalId_1=${user_1.animalId} AND westernId_2=${user_2.westernId} AND elementId_2=${user_2.elementId} AND animalId_2=${user_2.animalId} AND type=0;`;
-
+    db.query(query, function (err, result) {
+        if (err) throw err;
+        const response = {
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: result
+        };
+        console.log(result);
+        callback(err, response);
+        db.connection.end(function (err) { callback(err, result);});
+    });
 };

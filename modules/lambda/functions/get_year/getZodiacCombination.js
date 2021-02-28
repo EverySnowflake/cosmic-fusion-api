@@ -3,12 +3,15 @@ class getZodiacCombination {
   constructor(dob, sex){
     this.dob = dob;
     this.sex = sex;
-    this.dateArray = dob.split("-")
-    this.day = Number(this.dateArray[0])
-    this.month = Number(this.dateArray[1])
-    this.year = Number(this.dateArray[2])
-    this.yearSuffix = Number(dob.slice(-1))
-}
+      if (!Array.isArray(dob) || !dob.length) {
+          throw new Error('DOB has not been passed in the correct format. Please ensure DOB is an array.');
+      }
+    this.dateArray = dob.split("-");
+    this.day = Number(this.dateArray[0]);
+    this.month = Number(this.dateArray[1]);
+    this.year = Number(this.dateArray[2]);
+    this.yearSuffix = Number(dob.slice(-1));
+};
 
     western(day, month){
         const zodiacSigns = {
@@ -115,20 +118,19 @@ class getZodiacCombination {
     }
 
     getInfo() {
-        const western = this.western(this.day, this.month)
-        const element = this.element(this.yearSuffix)
-        const animal = this.animal(this.year)
-        const trio = `${western.western} ${element.element} ${animal.animal}`
-        const duo = `${element.element} ${animal.animal}`
-        const obj = {
+        const western = this.western(this.day, this.month);
+        const element = this.element(this.yearSuffix);
+        const animal = this.animal(this.year);
+        const trio = `${western.western} ${element.element} ${animal.animal}`;
+        const duo = `${element.element} ${animal.animal}`;
+        return {
             ...western,
             ...element,
             ...animal,
             ...{"sex": this.sex},
             ...{"trio": trio},
             ...{"duo": duo}
-        }
-        return obj
+        };
     }
 }
 

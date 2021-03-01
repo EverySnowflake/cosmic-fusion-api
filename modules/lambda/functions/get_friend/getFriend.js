@@ -2,11 +2,10 @@
 
 const mysql = require('mysql');
 const zodiacCombination = require('./getZodiacCombination');
-
 const DATABASE_HOST = process.env.DATABASE_HOST;
 const DATABASE_PORT = process.env.DATABASE_PORT;
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const DATABASE_USERNAME = process.env.DATABASE_USERNAME;
+const DATABASE_PASSWORD = process.env.PASSWORD;
 const DATABASE_NAME = process.env.DATABASE_NAME;
 
 exports.handler = function (event, context, callback) {
@@ -27,8 +26,8 @@ exports.handler = function (event, context, callback) {
     const db = mysql.createConnection({
         host: DATABASE_HOST,
         port: DATABASE_PORT,
-        user: USERNAME,
-        password: PASSWORD,
+        user: DATABASE_USERNAME,
+        password: DATABASE_PASSWORD,
         database: DATABASE_NAME
     });
 

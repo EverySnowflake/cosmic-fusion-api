@@ -4,8 +4,8 @@ const mysql = require('mysql');
 const celebsSql = `SELECT name, description, dateOfBirth, sex, animal_id, element_id, western_id, image FROM celebs`;
 const DATABASE_HOST = process.env.DATABASE_HOST;
 const DATABASE_PORT = process.env.DATABASE_PORT;
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const DATABASE_USERNAME = process.env.USERNAME;
+const DATABASE_PASSWORD = process.env.PASSWORD;
 const DATABASE_NAME = process.env.DATABASE_NAME;
 
 exports.handler = (event, context, callback) => {
@@ -13,8 +13,8 @@ exports.handler = (event, context, callback) => {
     const db = mysql.createConnection({
         host: DATABASE_HOST,
         port: DATABASE_PORT,
-        user: USERNAME,
-        password: PASSWORD,
+        user: DATABASE_USERNAME,
+        password: DATABASE_PASSWORD,
         database: DATABASE_NAME
     });
 

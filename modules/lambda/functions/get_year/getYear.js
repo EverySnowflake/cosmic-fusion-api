@@ -2,8 +2,7 @@ const zodiacCombination = require('./getZodiacCombination');
 
 exports.handler = function (event, context, callback) {
     var date = event.params.querystring.date
-    var sex_at_birth = event.params.querystring.sex_at_birth
-    var data = new zodiacCombination(`${date}`, sex_at_birth).getInfo()
+    var data = new zodiacCombination(`${date}`, 0).getInfo()
 
     var response = {
       statusCode: 200,

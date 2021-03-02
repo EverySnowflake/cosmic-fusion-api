@@ -52,7 +52,7 @@ module "get_year_endpoint" {
   authorization        = "NONE"
   path_part            = "get-year"
   query_string_a       = "date"
-  query_string_b       = "sex_at_birth"
+  query_string_b       = false
   query_string_c       = false
   query_string_d       = false
   rest_api_id          = module.cosmic_fusion_api.id

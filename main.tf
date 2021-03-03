@@ -126,3 +126,18 @@ module "domain_deployment" {
   domain_name     = var.domain_name
   certificate_arn = var.certificate_arn
 }
+
+# RDS Database
+
+module "rds" {
+  source             = "./modules/rds"
+  env                = var.env
+  engine             = var.engine
+  engine_version     = var.engine_version
+  instance_class     = var.instance_class
+  port               = var.port
+  maintenance_window = var.maintenance_window
+  backup_window      = var.backup_window
+  subnet_ids         = var.subnet_ids
+  db_family          = var.db_family
+}

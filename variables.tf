@@ -8,10 +8,6 @@ variable "api_name" {
   default = "cosmic_fusion"
 }
 
-variable "type" {
-  default = "AWS_PROXY"
-}
-
 variable "region" {
   default = "eu-west-2"
 }

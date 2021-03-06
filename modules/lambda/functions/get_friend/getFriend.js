@@ -21,7 +21,6 @@ exports.handler = function (event, context, callback) {
     const user_info_2 = user_2.getInfo();
 
     const {westernId, elementId, animalId, sex, trio} = user_info;
-    const {westernId2, elementId2, animalId2, sex2, trio2} = user_info_2;
 
     const db = mysql.createConnection({
         host: DATABASE_HOST,
@@ -36,19 +35,44 @@ exports.handler = function (event, context, callback) {
         console.log("Connected");
     });
 
-    const query = `SELECT score FROM compatibility_scores WHERE westernId_1=${westernId} AND elementId_1=${elementId} AND animalId_1=${animalId} AND westernId_2=${westernId2} AND elementId_2=${elementId2} AND animalId_2=${animalId2} AND type=${sex_at_birth_1};`;
+    const friendshipType = sex_at_birth_1 === sex_at_birth_2 ? 1 : 0;
+    const friend_1_sql = `SELECT summary FROM character_profiles WHERE westernId=${westernId} AND elementId=${elementId} AND animalId=${animalId} AND sex=${sex_at_birth_1}`;
+    const friend_2_sql = `SELECT summary FROM character_profiles WHERE westernId=${user_info_2.westernId} AND elementId=${user_info_2.elementId} AND animalId=${user_info_2.animalId} AND sex=${sex_at_birth_2}`;
+    const sql = `SELECT summary, endPercentage FROM compatibility_summarys WHERE endPercentage = CEILING((SELECT score FROM
+        compatibility_scores
+      WHERE
+        westernId_1 = ${westernId}
+        AND elementId_1 = ${elementId}
+        AND animalId_1 = ${animalId}
+        AND westernId_2 = ${user_info_2.westernId}
+        AND elementId_2 = ${user_info_2.elementId}
+        AND animalId_2 = ${user_info_2.animalId}
+        AND type = ${friendshipType}))`;
 
-    db.query(query, function (err, result) {
+    let result_object = {
+        combination_1: trio,
+        combination_2: user_info_2.trio
+    };
+
+    db.query(friend_1_sql, function (err, friend_summary_1) {
         if (err) throw err;
-        const response = {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: result
-        };
-        console.log(result);
-        callback(err, response);
-        db.connection.end(function (err) { callback(err, result);});
+        db.query(friend_2_sql, function(err, friend_summary_2) {
+            if (err) throw err;
+            result_object["character_profile_1"] = friend_summary_1[0].summary;
+            result_object["character_profile_2"] = friend_summary_2[0].summary;
+            db.query(sql, function (err, compatibility_object) {
+                result_object["summary"] = compatibility_object[0].summary;
+                result_object["compatibility_score"] = compatibility_object[0].endPercentage;
+                const response = {
+                    statusCode: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: result_object
+                };
+                callback(err, response);
+                db.connection.end(function (err) { callback(err, result_object);});
+            });
+        })
     });
 };

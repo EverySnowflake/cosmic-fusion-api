@@ -3,9 +3,9 @@ class getZodiacCombination {
   constructor(dob, sex){
     this.dob = dob;
     this.sex = sex;
-    if (!dob.includes("-")) {
-        throw new Error("DOB has not been passed in the correct format. Please ensure dob is separated by '-'");
-    }
+      if (!dob.includes("-")) {
+          throw new Error("DOB has not been passed in the correct format. Please ensure dob is separated by '-'");
+      }
     this.dateArray = dob.split("-");
     this.day = Number(this.dateArray[0]);
     this.month = Number(this.dateArray[1]);

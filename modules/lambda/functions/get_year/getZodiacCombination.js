@@ -3,15 +3,15 @@ class getZodiacCombination {
   constructor(dob, sex){
     this.dob = dob;
     this.sex = sex;
-      if (!Array.isArray(dob) || !dob.length) {
-          throw new Error('DOB has not been passed in the correct format. Please ensure DOB is an array.');
-      }
+    if (!dob.includes("-")) {
+        throw new Error("DOB has not been passed in the correct format. Please ensure dob is separated by '-'");
+    }
     this.dateArray = dob.split("-");
     this.day = Number(this.dateArray[0]);
     this.month = Number(this.dateArray[1]);
     this.year = Number(this.dateArray[2]);
     this.yearSuffix = Number(dob.slice(-1));
-};
+}
 
     western(day, month){
         const zodiacSigns = {
@@ -27,9 +27,9 @@ class getZodiacCombination {
             "libra": {"western": "Libra", "westernId": 7},
             "scorpio" : {"western": "Scorpio", "westernId": 8},
             "sagittarius": {"western": "Sagittarius", "westernId": 9}
-          }
+          };
         
-          if((month == 1 && day <= 20) || (month == 12 && day >=22)) {
+          if((month === 1 && day <= 20) || (month === 12 && day >=22)) {
             return zodiacSigns.capricorn;
           } else if ((month == 1 && day >= 21) || (month == 2 && day <= 18)) {
             return zodiacSigns.aquarius;
@@ -37,7 +37,7 @@ class getZodiacCombination {
             return zodiacSigns.pisces;
           } else if((month == 3 && day >= 21) || (month == 4 && day <= 20)) {
             return zodiacSigns.aries;
-          } else if((month == 4 && day >= 21) || (month == 5 && day <= 20)) {
+          } else if((month === 4 && day >= 21) || (month == 5 && day <= 20)) {
             return zodiacSigns.taurus;
           } else if((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
             return zodiacSigns.gemini;

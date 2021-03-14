@@ -8,6 +8,16 @@ resource "aws_lambda_function" "lambda" {
   runtime = var.runtime
 
   role = aws_iam_role.lambda_role.arn
+
+  environment {
+    variables = {
+      DATABASE_USERNAME = var.DATABASE_USERNAME
+      DATABASE_PASSWORD = var.DATABASE_PASSWORD
+      DATABASE_PORT     = var.DATABASE_PORT
+      DATABASE_HOST     = var.DATABASE_HOST
+      DATABASE_NAME     = "${var.env}_${var.DATABASE_NAME}"
+    }
+  }
 }
 
 resource "aws_lambda_permission" "apigw" {

@@ -1,3 +1,5 @@
 .terraform.lock.hcl
 .terraform/
 node_modules/
+modules/lambda/variables.tf
+modules/rds/variables.tf

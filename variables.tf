@@ -1,5 +1,3 @@
-variable "handler" {}
-
 variable "domain_name" {}
 
 variable "env" {}

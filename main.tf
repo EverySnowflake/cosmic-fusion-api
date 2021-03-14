@@ -32,6 +32,7 @@ module "get_profile_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_profile_lambda.function_name
   lambda_invoke_arn    = module.get_profile_lambda.invoke_arn
+  request_models       = null
 }
 
 # GET Year
@@ -61,6 +62,7 @@ module "get_year_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_year_lambda.function_name
   lambda_invoke_arn    = module.get_year_lambda.invoke_arn
+  request_models       = null
 }
 
 #GET celebs
@@ -90,6 +92,7 @@ module "get_celebs_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_celebs_lambda.function_name
   lambda_invoke_arn    = module.get_celebs_lambda.invoke_arn
+  request_models       = null
 }
 
 #GET friend
@@ -119,6 +122,39 @@ module "get_friend_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_friend_lambda.function_name
   lambda_invoke_arn    = module.get_friend_lambda.invoke_arn
+  request_models       = null
+}
+
+# POST Notification Token
+
+module "post_token_lambda" {
+  source                 = "./modules/lambda"
+  lambda_zip_file        = "${var.env}PostToken.zip"
+  function_name          = "${var.env}PostToken"
+  handler                = "postToken.handler"
+  runtime                = "nodejs12.x"
+  rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
+  lambda_bucket          = var.lambda_bucket
+  env                    = var.env
+  DATABASE_HOST          = trimsuffix(module.rds.endpoint, ":${var.port}")
+}
+
+module "post_token_endpoint" {
+  source               = "./modules/endpoints"
+  http_method          = "POST"
+  authorization        = "NONE"
+  path_part            = "post-token"
+  query_string_a       = false
+  query_string_b       = false
+  query_string_c       = false
+  query_string_d       = false
+  rest_api_id          = module.cosmic_fusion_api.id
+  root_resource_id     = module.cosmic_fusion_api.root_resource_id
+  lambda_function_name = module.post_token_lambda.function_name
+  lambda_invoke_arn    = module.post_token_lambda.invoke_arn
+  request_models = {
+    "application/json" = "postToken"
+  }
 }
 
 # Domain deployment

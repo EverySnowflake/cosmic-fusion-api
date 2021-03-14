@@ -16,7 +16,8 @@ resource "aws_api_gateway_method" "method" {
   resource_id          = aws_api_gateway_resource.resource.id
   http_method          = var.http_method
   authorization        = var.authorization
-  request_validator_id = aws_api_gateway_request_validator.validator.id
+  request_models       = var.request_models
+  request_validator_id = var.http_method == "GET" ? aws_api_gateway_request_validator.validator.id : null
 
   request_parameters = {
     "method.request.querystring.${var.query_string_a}" = false
@@ -34,7 +35,7 @@ resource "aws_api_gateway_integration" "integration" {
   type                    = "AWS"
   uri                     = var.lambda_invoke_arn
   request_templates = {
-    "application/json" = "${data.template_file.mapping_template.rendered}"
+    "application/json" = data.template_file.mapping_template.rendered
   }
 
   request_parameters = {

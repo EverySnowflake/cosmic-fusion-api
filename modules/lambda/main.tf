@@ -52,4 +52,18 @@ resource "aws_iam_role" "lambda_role" {
 }
 EOF
 
+  inline_policy {
+    name = "sns_permissions"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action   = ["sns:*"]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
 }

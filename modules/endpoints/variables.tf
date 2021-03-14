@@ -19,3 +19,5 @@ variable "query_string_b" {}
 variable "query_string_c" {}
 
 variable "query_string_d" {}
+
+variable "request_models" {}

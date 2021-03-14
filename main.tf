@@ -2,7 +2,7 @@
 
 module "cosmic_fusion_api" {
   source   = "./modules/api"
-  api_name = "${var.api_name}_${var.env}"
+  api_name = "${var.env}_${var.api_name}"
 }
 
 # GET Profile
@@ -16,6 +16,7 @@ module "get_profile_lambda" {
   rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
   lambda_bucket          = var.lambda_bucket
   env                    = var.env
+  DATABASE_HOST          = trimsuffix(module.rds.endpoint, ":${var.port}")
 }
 
 module "get_profile_endpoint" {
@@ -44,6 +45,7 @@ module "get_year_lambda" {
   rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
   lambda_bucket          = var.lambda_bucket
   env                    = var.env
+  DATABASE_HOST          = trimsuffix(module.rds.endpoint, ":${var.port}")
 }
 
 module "get_year_endpoint" {
@@ -72,6 +74,7 @@ module "get_celebs_lambda" {
   rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
   lambda_bucket          = var.lambda_bucket
   env                    = var.env
+  DATABASE_HOST          = trimsuffix(module.rds.endpoint, ":${var.port}")
 }
 
 module "get_celebs_endpoint" {
@@ -100,6 +103,7 @@ module "get_friend_lambda" {
   rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
   lambda_bucket          = var.lambda_bucket
   env                    = var.env
+  DATABASE_HOST          = trimsuffix(module.rds.endpoint, ":${var.port}")
 }
 
 module "get_friend_endpoint" {
@@ -125,4 +129,19 @@ module "domain_deployment" {
   stage_name      = var.env
   domain_name     = var.domain_name
   certificate_arn = var.certificate_arn
+}
+
+# RDS Database
+
+module "rds" {
+  source             = "./modules/rds"
+  env                = var.env
+  engine             = var.engine
+  engine_version     = var.engine_version
+  instance_class     = var.instance_class
+  port               = var.port
+  maintenance_window = var.maintenance_window
+  backup_window      = var.backup_window
+  subnet_ids         = var.subnet_ids
+  db_family          = var.db_family
 }

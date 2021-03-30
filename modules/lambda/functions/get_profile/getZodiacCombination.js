@@ -88,7 +88,7 @@ class getZodiacCombination {
                 return {"animal": "Tiger", "animalId": 6};
     
             case 3:
-                return {"animal": "Rabbit", "animalId": 7};
+                return {"animal": "Hare", "animalId": 7};
     
             case 4:
                 return {"animal": "Dragon", "animalId": 8};

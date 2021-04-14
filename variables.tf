@@ -50,3 +50,15 @@ variable "subnet_ids" {
 variable "db_family" {
   default = "mysql5.6"
 }
+
+variable "platform_name" {
+  default = "cosmic_fusion_sns_platform_application"
+}
+
+variable "platform" {
+  default = "fcm"
+}
+
+variable "api_key" {
+  default = ""
+}

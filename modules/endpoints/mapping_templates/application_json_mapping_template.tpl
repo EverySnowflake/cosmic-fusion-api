@@ -2,7 +2,7 @@
 ##  This template will pass through all parameters including path, querystring, header, stage variables, and context through to the integration endpoint via the body/payload
 #set($allParams = $input.params())
 {
-"body-json" : $input.json('$'),
+"body" : $input.json('$'),
 "params" : {
 #foreach($type in $allParams.keySet())
     #set($params = $allParams.get($type))

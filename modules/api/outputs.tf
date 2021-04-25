@@ -9,3 +9,7 @@ output "root_resource_id" {
 output "execution_arn" {
   value = aws_api_gateway_rest_api.cosmic_fusion.execution_arn
 }
+
+output "input_model_id" {
+  value = aws_api_gateway_model.input_model.id
+}

@@ -32,6 +32,7 @@ module "get_profile_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_profile_lambda.function_name
   lambda_invoke_arn    = module.get_profile_lambda.invoke_arn
+  request_models       = null
 }
 
 # GET Year
@@ -61,6 +62,7 @@ module "get_year_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_year_lambda.function_name
   lambda_invoke_arn    = module.get_year_lambda.invoke_arn
+  request_models       = null
 }
 
 #GET celebs
@@ -90,6 +92,7 @@ module "get_celebs_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_celebs_lambda.function_name
   lambda_invoke_arn    = module.get_celebs_lambda.invoke_arn
+  request_models       = null
 }
 
 #GET friend
@@ -119,6 +122,7 @@ module "get_friend_endpoint" {
   root_resource_id     = module.cosmic_fusion_api.root_resource_id
   lambda_function_name = module.get_friend_lambda.function_name
   lambda_invoke_arn    = module.get_friend_lambda.invoke_arn
+  request_models       = null
 }
 
 # Domain deployment

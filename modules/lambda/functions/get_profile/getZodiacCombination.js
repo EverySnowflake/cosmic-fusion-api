@@ -118,20 +118,27 @@ class getZodiacCombination {
     }
 
     getInfo() {
-        const western = this.western(this.day, this.month);
-        const element = this.element(this.yearSuffix);
-        const animal = this.animal(this.year);
-        const trio = `${western.western} ${element.element} ${animal.animal}`;
-        const duo = `${element.element} ${animal.animal}`;
-        return {
-            ...western,
-            ...element,
-            ...animal,
-            ...{"sex": this.sex},
-            ...{"trio": trio},
-            ...{"duo": duo}
-        };
-    }
+      const western = this.western(this.day, this.month)
+      const element = this.element(this.yearSuffix)
+      const animal = this.animal(this.year)
+      const western_element_duo = `${western.western} ${element.element}`
+      const element_animal_duo = `${element.element} ${animal.animal}`
+      const day = Number(this.day)
+      const month = Number(this.month)
+      const year = Number(this.year)
+      const obj = {
+          ...western,
+          ...element,
+          ...animal,
+          ...{"sex": this.sex},
+          ...{"western_element_duo": western_element_duo},
+          ...{"element_animal_duo": element_animal_duo},
+          ...{"day": day},
+          ...{"month": month},
+          ...{"year": year}
+      }
+      return obj
+  }
 }
 
 module.exports = getZodiacCombination;

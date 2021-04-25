@@ -34,7 +34,7 @@ resource "aws_api_gateway_integration" "integration" {
   type                    = "AWS"
   uri                     = var.lambda_invoke_arn
   request_templates = {
-    "application/json" = "${data.template_file.mapping_template.rendered}"
+    "application/json" = data.template_file.mapping_template.rendered
   }
 
   request_parameters = {

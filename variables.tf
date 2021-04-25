@@ -52,3 +52,15 @@ variable "subnet_ids" {
 variable "db_family" {
   default = "mysql5.6"
 }
+
+variable "api_key" {
+  default = ""
+}
+
+variable "platform_name" {
+  default = "cosmic_fusion_platform_application"
+}
+
+variable "platform" {
+  default = "GPG"
+}

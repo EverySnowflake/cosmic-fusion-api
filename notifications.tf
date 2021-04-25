@@ -1,10 +1,10 @@
 # SNS
 
 module "sns_platform_application" {
-  source              = "./modules/sns_platform_application"
-  name                = "${var.env}_var.platform_name"
-  platform            = var.platform
-  platform_credential = var.api_key
+  source   = "./modules/sns_platform_application"
+  name     = "${var.env}_${var.platform_name}"
+  platform = var.platform
+  api_key  = var.api_key
 }
 
 # Lambda
@@ -12,8 +12,8 @@ module "sns_platform_application" {
 module "send_notification_lambda" {
   source                 = "./modules/lambda"
   lambda_zip_file        = "${var.env}SendNotification.zip"
-  function_name          = "${var.env}SendNotification"
-  handler                = "sendNotification.handler"
+  function_name          = "${var.env}SendDailyNotification"
+  handler                = "sendDailyNotification.handler"
   runtime                = "nodejs12.x"
   rest_api_execution_arn = module.cosmic_fusion_api.execution_arn
   lambda_bucket          = var.lambda_bucket

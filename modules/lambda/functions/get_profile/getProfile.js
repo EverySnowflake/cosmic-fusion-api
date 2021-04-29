@@ -33,17 +33,15 @@ exports.handler = function (event, context, callback) {
   }
 
   var connection = mysql.createConnection(connectionConfig)
-  const { westernId, elementId, animalId, sex, western_element_duo, day, month, year } = user_info
-  const items = "characterProfileId, animalId, elementId, westernId, summary, sex, startdate"
-  const query = `SELECT ${items} FROM character_profiles, chinese_newyear_dates WHERE westernId=${westernId} AND elementId=${elementId} AND animalId=${animalId} AND sex=${sex} AND year=${year}`
+  const { westernId, elementId, animalId, sex, western_element_duo, trio } = user_info
+  const items = "characterProfileId, animalId, elementId, westernId, summary, sex"
+  const query = `SELECT ${items} FROM character_profiles WHERE westernId=${westernId} AND elementId=${elementId} AND animalId=${animalId} AND sex=${sex}`
   connection.query(query, function (error, results, fields) {
       if (error) {
           connection.destroy();
           throw error;
       } else {
-          const startDate = results[0].startdate.toLocaleDateString()
-          const animal = chineseAnimal(user, day, month, year, startDate)
-          results[0]["trio"] = `${western_element_duo} ${animal}`;
+          results[0]["trio"] = trio;
           const response = {
             statusCode: 200,
             headers: {

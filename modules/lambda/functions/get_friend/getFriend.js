@@ -20,8 +20,7 @@ exports.handler = function (event, context, callback) {
     const user_info = user_1.getInfo();
     const user_info_2 = user_2.getInfo();
 
-    // const {westernId, elementId, animalId, sex, trio} = user_info;
-    const { westernId, elementId, animalId, sex, western_element_duo, day, month, year } = user_info
+    const {westernId, elementId, animalId, sex, trio} = user_info;
 
     const db = mysql.createConnection({
         host: DATABASE_HOST,
@@ -36,21 +35,9 @@ exports.handler = function (event, context, callback) {
         console.log("Connected");
     });
 
-    const chineseAnimal = (user, day, month, year, startDate) => {
-        const startDateArr = startDate.split("/")
-        const cnyDay = startDateArr[1]
-        const cnyMonth = startDateArr[0]
-        var animal
-        if(day < cnyDay && month <= cnyMonth){
-            animal = user.animal(year -1).animal
-        } else {
-            animal = user.animal(year).animal
-        }
-        return animal
-      }
     const friendshipType = sex_at_birth_1 === sex_at_birth_2 ? 1 : 0;
-    const friend_1_sql = `SELECT summary, startdate FROM character_profiles, chinese_newyear_dates WHERE westernId=${westernId} AND elementId=${elementId} AND animalId=${animalId} AND sex=${sex_at_birth_1} AND year=${year}`;
-    const friend_2_sql = `SELECT summary, startdate FROM character_profiles, chinese_newyear_dates WHERE westernId=${user_info_2.westernId} AND elementId=${user_info_2.elementId} AND animalId=${user_info_2.animalId} AND sex=${sex_at_birth_2} AND year=${user_info_2.year}`;
+    const friend_1_sql = `SELECT summary FROM character_profiles WHERE westernId=${westernId} AND elementId=${elementId} AND animalId=${animalId} AND sex=${sex_at_birth_1}`;
+    const friend_2_sql = `SELECT summary FROM character_profiles WHERE westernId=${user_info_2.westernId} AND elementId=${user_info_2.elementId} AND animalId=${user_info_2.animalId} AND sex=${sex_at_birth_2}`;
     const sql = `SELECT summary, endPercentage FROM compatibility_summarys WHERE endPercentage = CEILING((SELECT score FROM
         compatibility_scores
       WHERE
@@ -62,18 +49,15 @@ exports.handler = function (event, context, callback) {
         AND animalId_2 = ${user_info_2.animalId}
         AND type = ${friendshipType}))`;
 
-    let result_object = {};
+    let result_object = {
+        combination_1: trio,
+        combination_2: user_info_2.trio
+    };
 
     db.query(friend_1_sql, function (err, friend_summary_1) {
         if (err) throw err;
         db.query(friend_2_sql, function(err, friend_summary_2) {
             if (err) throw err;
-            const startDateOne = friend_summary_1[0].startdate.toLocaleDateString()
-            const startDateTwo = friend_summary_2[0].startdate.toLocaleDateString()
-            const animalOne = chineseAnimal(user_1, day, month, year, startDateOne)
-            const animalTwo = chineseAnimal(user_2, user_info_2.day, user_info_2.month, user_info_2.year, startDateTwo)
-            result_object["combination_1"] = `${western_element_duo} ${animalOne}`;
-            result_object["combination_2"] = `${user_info_2.western_element_duo} ${animalTwo}`;
             result_object["character_profile_1"] = friend_summary_1[0].summary;
             result_object["character_profile_2"] = friend_summary_2[0].summary;
             db.query(sql, function (err, compatibility_object) {
